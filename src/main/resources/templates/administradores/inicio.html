@@ -22,6 +22,24 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="../../static/estilos.css">
+    <!-- Scripts de Bootstrap y cualquier otro script necesario -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../../static/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:if="${success}">
+        // Desaparece el mensaje de éxito después de 1 segundo
+        setTimeout(function() {
+            $('.alert-success').fadeOut('slow');
+        }, 2000);
+    </script>
+
+    <script th:if="${error}">
+        // Desaparece el mensaje de error después de 1 segundo
+        setTimeout(function() {
+            $('.alert-danger').fadeOut('slow');
+        }, 2000);
+    </script>
 </head>
 <body>
 <header class="position-sticky top-0 z-1">
@@ -50,29 +68,39 @@
         <div class="box-inner"></div>
     </div>
     <div style="background-color: rgb(229,229,229)" class="d-flex justify-content-center align-items-center text-center">
-        <div class="container">
+        <div class="container mt-1">
             <h1 class="text-center">Bienvenido <span th:text="${#authentication.getName()}"></span></h1>
-            <div class="row justify-content-center">
-                <div class="col-md-4 col-sm-6 text-center">
-                    <div class="p-2">
-                        <h2>Gestionar Usuarios</h2>
-                        <br>
-                        <div class="d-flex align-items-center justify-content-center">
-                            <img src="../../static/imagenes/usuarios.svg" alt width="80.2" height="80.2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div th:if="${success}" class="alert alert-success" role="alert">
+                            <span th:text="${success}"></span>
                         </div>
-                        <a class="btn btn-danger mt-3" href="/administrador/usuario/crear">Crear Usuario</a>
-                        <a class="btn btn-danger mt-3" href="/administrador/usuario/eliminar">Modificar/Eliminar Usuario</a>
+                        <div th:if="${error}" class="alert alert-danger" role="alert">
+                            <span th:text="${error}"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-6 text-center">
-                    <div class="p-2">
-                        <h2>Gestionar Actividades</h2>
-                        <br>
+            </div>
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-4 mt-2 d-flex align-items-center justify-content-center text-center">
+                    <div class="p-3">
+                        <h2>Gestionar Usuarios</h2>
                         <div class="d-flex align-items-center justify-content-center">
-                            <img src="../../static/imagenes/eventos.svg" alt width="80.2" height="80.2">
+                            <img src="../../static/imagenes/usuarios.svg" alt width="70.2" height="70.2">
                         </div>
-                        <a class="btn btn-danger mt-3" href="/administrador/eventos/nuevo">Crear Actividad</a>
-                        <a class="btn btn-danger mt-3" href="/administrador/eventos">Modificar/Eliminar Actividad</a>
+                        <a class="btn btn-danger mt-2" href="/administrador/usuario/crear">Crear Usuario</a>
+                        <a class="btn btn-danger mt-2" href="/administrador/usuario/eliminar">Modificar/Eliminar Usuario</a>
+                    </div>
+                </div>
+                <div class="col-md-4 mt-2 d-flex align-items-center justify-content-center text-center">
+                    <div class="p-3">
+                        <h2>Gestionar Actividades</h2>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <img src="../../static/imagenes/eventos.svg" alt width="70.2" height="70.2">
+                        </div>
+                        <a class="btn btn-danger mt-2" href="/administrador/eventos/nuevo">Crear Actividad</a>
+                        <a class="btn btn-danger mt-2" href="/administrador/eventos">Modificar/Eliminar Actividad</a>
                     </div>
                 </div>
             </div>
@@ -87,10 +115,6 @@
     <div class="d-grid grid-footer gap-5 pt-5">
     </div>
 </footer>
-<!-- Scripts de Bootstrap y cualquier otro script necesario -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="../../static/script.js"></script>
 </body>
 </html>
 

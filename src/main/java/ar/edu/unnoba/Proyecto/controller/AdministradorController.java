@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -133,83 +134,6 @@ public class AdministradorController {
     }//FUNCIONALIDAD: procesa el formulario de modificación de un evento y guarda los cambios
 
 
-    //*****************ACTIVIDAD*****************
-
-    @GetMapping("/actividades")
-    public String actividades(Model model, Authentication authentication) {
-        User sessionUser = (User) authentication.getPrincipal();
-
-        model.addAttribute("actividades", actividadService.getAll());
-        model.addAttribute("user", sessionUser);
-        return "administradores/actividades";
-    }//FUNCIONALIDAD: muestra las actividades
-
-    @GetMapping("/actividades/eliminar/{id}")
-    public String eliminarActividad(Model model, @PathVariable Long id) {
-
-        actividadService.delete(id);
-        model.addAttribute("succes", "La actividad se elimino con exito");
-        return "redirect:/administrador/actividades";
-    }//FUNCIONALIDAD: elimina una actividad por su id
-
-    @GetMapping("/actividades/nuevo")
-    public String nuevaActividad(Model model, Authentication authentication) {
-        User sessionUser = (User) authentication.getPrincipal();
-
-        Actividad actividad = new Actividad();
-        model.addAttribute("actividad", actividad); //el usuario debe introducir: titulo, descripcion y horarios de aterncion
-        model.addAttribute("user", sessionUser);
-        return "administradores/nueva-actividad";
-    }//FUNCIONALIDAD: muestra el formulario para crear un nuevo evento
-
-    @PostMapping("/actividades/nuevo")
-    public String crearActividad(Model model, Authentication authentication, @Valid Actividad actividad, BindingResult result) {
-        User sessionUser = (User) authentication.getPrincipal();
-
-        if (result.hasErrors()) {
-            model.addAttribute("actividad", actividad);
-            model.addAttribute("user", sessionUser);
-            return "administradores/nueva-actividad";
-        }//Mantiene los datos que ingresó el usuario si vuelve al mismo html
-
-        actividadService.save(actividad);
-        model.addAttribute("success", "La actividad ha sido creado correctamente.");
-        return "redirect:/administrador/inicio";
-    }//FUNCIONALIDAD: procesa el formulario de creación de una nueva actividad y la guarda
-
-    //*****************EVENTO (AL SELECCIONAR CLICKEANDO)*****************
-
-    @GetMapping("/actividad/{id}")
-    public String modificarActividad(Model model, Authentication authentication, @PathVariable Long id) {
-
-        User sessionUser = (User) authentication.getPrincipal();
-
-        Actividad actividad = actividadService.get(id);
-        model.addAttribute("actividad", actividad);
-        model.addAttribute("user", sessionUser);
-        model.addAttribute("mensaje", "las actividades se modificaran");
-        return "administradores/Actividad";
-    }//FUNCIONALIDAD: muestra una actividad específica con sus detalles y permite modificarla
-
-    @PostMapping("/actividad/{id}")
-    public String modificarActividad(Model model, Authentication authentication, @Valid Actividad actividad, BindingResult result) {
-        User sessionUser = (User) authentication.getPrincipal();
-
-        if (result.hasErrors()) {
-            model.addAttribute("actividad", actividad);
-            model.addAttribute("user", sessionUser);
-            return "administradores/actividades";
-        }//Mantiene los datos que ingresó el usuario, aunque fuera error, para luego corregirlos al ingresar de nuevo.
-
-
-        actividadService.save(actividad);
-        model.addAttribute("success", "La actividad ha sido modificada correctamente.");
-        return "redirect:/administrador/actividades";
-    }//FUNCIONALIDAD: procesa el formulario de modificación de una actividad y guarda los cambios
-
-
-
-
     //*****************Historia*****************
 
     @GetMapping("/historia")
@@ -246,7 +170,7 @@ public class AdministradorController {
     }
 
     @PostMapping("/usuario/crear")
-    public String crearUsuario(Model model, Authentication authentication, @Valid Usuario usuario, BindingResult result) {
+    public String crearUsuario(RedirectAttributes redirectAttributes, Model model, Authentication authentication, @Valid Usuario usuario, BindingResult result) {
         User sessionUser = (User) authentication.getPrincipal();
 
         if (result.hasErrors()) {
@@ -255,7 +179,7 @@ public class AdministradorController {
             return "administradores/nuevo-usuario";
         }
         usuarioService.save(usuario);
-        model.addAttribute("success", "El usuario ha sido creado correctamente.");
+        redirectAttributes.addFlashAttribute("success", "El usuario ha sido creado correctamente.");
         return "redirect:/administrador/inicio";
     }
 
@@ -270,18 +194,18 @@ public class AdministradorController {
     }
 
     @PostMapping("/usuarios/eliminar")
-    public String eliminarUsuario(Model model, @RequestParam("nomUsuario") String nomUsuario) {
-        Usuario usuario = usuarioService.findByUserName(nomUsuario); //consigo el usuario a traves de su nombre
+    public String eliminarUsuario(RedirectAttributes redirectAttributes, @RequestParam("nombreUsuario") String nombreUsuario) {
+        Usuario usuario = usuarioService.findByUserName(nombreUsuario); //consigo el usuario a traves de su nombre
         if (usuario != null) {
             long totalUsuarios = usuarioService.countUsuarios();
             if (totalUsuarios > 1) {
                 usuarioService.delete(usuario.getId()); //obtengo el id del usuario y lo borro de la db
-                model.addAttribute("success", "El usuario fue borrado correctamente.");
+                redirectAttributes.addFlashAttribute("success", "El usuario fue borrado correctamente.");
             } else {
-                model.addAttribute("error", "Error, no se puede borrar al unico usuario de la base de datos.");
+                redirectAttributes.addFlashAttribute("error", "Error, no se puede borrar al unico usuario de la base de datos.");
             }
         } else {
-            model.addAttribute("error", "Error, no se encontro un usuario con ese nombre.");
+            redirectAttributes.addFlashAttribute("error", "Error, no se encontro un usuario con ese nombre.");
         }
         return "redirect:/administrador/inicio";
     }

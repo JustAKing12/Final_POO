@@ -51,54 +51,47 @@
 
 <div class="container">
 
-
   <!--  <img src="../../static/imagenes/logo.png" alt="Logo" />-->
   <div th:if="${crear == 1}">
-  <h1  class="p-5" >Crear usuario administrador</h1>
+  <h1  class="p-3 text-center" >Datos del nuevo Administrador</h1>
 
   <div th:if="${param.error}" class="custom-alert text-center">
     <strong>Nombre de usuario ya existente</strong><br>
   </div>
 
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <form th:action="@{/administrador/usuario/crear}" method="post">
+            <div class="mb-3">
+              <label for="username" class="form-label label-h">Usuario</label>
+              <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese un nombre de usuario." required/>
+            </div>
 
-    <form th:action="@{/administrador/usuario/crear}" method="post">
-      <div class="p-2 g-col-6 ">
-        <label for="username" ></label>
-        <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder="Usuario"
-                required
+            <div class="mb-3">
+              <label for="password" class="form-label label-h">Contraseña</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese una contraseña." required/>
+            </div>
 
-        />
+            <div class="mb-3">
+              <button type="submit" class="btn btn-primary">Crear usuario</button>
+            </div>
+
+          </form>
+        </div>
       </div>
-      <div class="p-2 g-col-6">
-        <label for="password"></label>
-        <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Contraseña"
-                required
-        />
-      </div>
-      <div class="p-2 g-col-6">
-        <input type="submit" value="Crear usuario "/>
-      </div>
-    </form>
+    </div>
   </div>
 
   <!-- th:if="${param.borrarUsuario}" class="#">-->
   <div th:if="${borrar == 1}">
-    <h1 class="p-5" >Borrar usuario</h1>
-    <h3 class="p-3 text-center">Lista de usuarios administradores</h3>
+    <h1 class="p-5 text-center" >Lista de usuarios administradores</h1>
 
     <div class="container">
       <div class="row">
         <!-- "th:each": Itera sobre cada usuario en la lista de usuarios -->
-        <div th:each="usuario : ${usuarios}" class="col-md-4 mb-4">
-          <div class="card event_card">
+        <div th:each="usuario : ${usuarios}" class="col-md-2 mb-3">
+          <div class="card event_card bg-customAdmin text-center card-small">
             <div class="card-body">
               <h5 th:text="${usuario.getUsername()}" class="card-title"></h5>
             </div>
@@ -107,12 +100,21 @@
       </div>
     </div>
 
-
-    <form th:action="@{/administrador/usuarios/eliminar}" method="post">
-      <label for="nomUsuario">Nombre del Usuario a borrar:</label>
-      <input type="text" id="nomUsuario" name="nomUsuario" placeholder="Nombre del Usuario" required/>
-      <input type="submit" value="Borrar usuario"/>
-    </form>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <form th:action="@{/administrador/usuarios/eliminar}" method="post">
+            <div class="mb-3">
+              <label for="nombreUsuario" class="form-label label-h">Nombre del Usuario a borrar:</label>
+              <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" placeholder="Nombre del Usuario" required/>
+            </div>
+            <div class="mb-3">
+              <button type="submit" class="btn btn-danger">Borrar usuario</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>

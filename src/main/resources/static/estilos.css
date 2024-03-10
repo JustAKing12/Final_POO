@@ -162,13 +162,17 @@ input:focus, textarea:focus {
     background-color: #F00822;
 }
 
-.alert{
-    margin: 8px;
-    padding: 8px;
+.label-h{
+    font-weight: bold;
+    font-size: 1.3rem;
 }
-.alert-danger{
-    margin: 8px;
-    padding: 8px;
+
+.card-small {
+    max-width: 15rem; /* Tamaño máximo de la tarjeta */
+}
+
+.bg-customAdmin {
+    background-color: #eeeeee;
 }
 
 @media (min-width: 768px) {
