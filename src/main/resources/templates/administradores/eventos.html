@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta name="fragment" content="!">
     <meta content="es-ar" http-equiv="content-language">
@@ -49,38 +49,62 @@
         <div class="box-inner"></div>
     </div>
 
-    <!--<div th:if="${success}" class="custom-alert">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>El evento ha sido eliminado correctamente.</strong>
-    </div>-->
+    <div style="background-color: #d2b300">
+        <!--<div th:if="${success}" class="custom-alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>El evento ha sido eliminado correctamente.</strong>
+        </div>-->
 
-    <!-- Vista de los eventos con tarjetas -->
-    <div class="container">
-        <div class="row">
-            <!-- Iterar sobre cada evento en la lista de eventos -->
-            <div th:each="evento : ${eventosconcreadores}" class="col-md-4 mb-4">
-                <!-- Card para cada evento -->
-                <div class="card event_card">
-                    <!-- Imagen del evento -->
-                    <img height="250px"  th:src="@{${'/display?id=' + evento.getId()}}" alt="">
-                    <div class="card-body">
-                        <!-- Título del evento -->
-                        <h5 th:text="${evento.getTitulo()}" class="card-title"></h5>
-                        <!-- Descripción del evento -->
-                        <p th:text="${evento.getDescripcion()}" class="card-text"></p>
-                        <!-- Fecha del evento -->
-                        <p th:text="${evento.getFecha()}" class="card-text"></p>
-                        <!-- ID del evento -->
-                        <p th:text="${evento.getId()}" class="card-text"></p>
-                        <a th:href="@{'/administrador/evento/' + ${evento.getId()}}" class="btn btn-primary">Modificar</a>
-                        <a th:href="@{'/administrador/eventos/eliminar/' + ${evento.getId()}}" class="btn btn-primary">Eliminar</a>
-                        <!-- Botón "Ver más" que enlaza a la página del evento -->
-                        <!--<a th:href="@{'/administrador/evento/' + ${evento.getId()}}" class="btn btn-primary">Ver más</a>-->
+        <!-- Vista de los eventos con tarjetas -->
+        <div class="container">
+            <div class="d-flex flex-row align-items-center justify-content-center gap-3 pb-3">
+                <a th:if="${currentPage > 0}"
+                   th:href="@{'/visitante/eventos?page=' + ${currentPage - 1}}">
+                    <img src="../../static/imagenes/izquierda.svg" width="30" height="30" alt>
+                </a>
+                <span class="fs-5 text-white">Página <span th:text="${currentPage + 1}"></span> de <span th:text="${totalPages}"></span></span>
+                <a th:href="@{'/visitante/eventos?page=' + ${currentPage + 1}}">
+                    <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
+                </a>
+            </div>
+            <div class="row">
+                <!-- Iterar sobre cada evento en la lista de eventos -->
+                <div th:each="evento : ${eventosconcreadores}" class="col-md-4 mb-4">
+                    <!-- Card para cada evento -->
+                    <div class="card event_card">
+                        <!-- Imagen del evento -->
+                        <img height="250px"  th:src="@{${'/display?id=' + evento.getId()}}" alt="">
+                        <div class="card-body">
+                            <!-- Título del evento -->
+                            <h5 th:text="${evento.getTitulo()}" class="card-title"></h5>
+                            <!-- Descripción del evento -->
+                            <p th:text="${evento.getDescripcion()}" class="card-text"></p>
+                            <!-- Fecha del evento -->
+                            <p th:text="${evento.getFecha()}" class="card-text"></p>
+                            <!-- ID del evento -->
+                            <p th:text="${evento.getId()}" class="card-text"></p>
+                            <a th:href="@{'/administrador/evento/' + ${evento.getId()}}" class="btn btn-danger"><img src="../../static/imagenes/Editar.svg" width="15" height="15" alt> Modificar</a>
+                            <a th:href="@{'/administrador/eventos/eliminar/' + ${evento.getId()}}" class="btn btn-danger"><img src="../../static/imagenes/Eliminar.svg" width="15" height="15" alt> Eliminar</a>
+                            <!-- Botón "Ver más" que enlaza a la página del evento -->
+                            <!--<a th:href="@{'/administrador/evento/' + ${evento.getId()}}" class="btn btn-primary">Ver más</a>-->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="d-flex flex-row align-items-center justify-content-center gap-3 pb-3">
+            <a th:if="${currentPage > 0}"
+               th:href="@{'/visitante/eventos?page=' + ${currentPage - 1}}">
+                <img src="../../static/imagenes/izquierda.svg" width="30" height="30" alt>
+            </a>
+            <span class="fs-5 text-white">Página <span th:text="${currentPage + 1}"></span> de <span th:text="${totalPages}"></span></span>
+            <a th:href="@{'/visitante/eventos?page=' + ${currentPage + 1}}">
+                <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
+            </a>
+        </div>
+
     </div>
+
     <div class="box" style="transform: rotate(180deg)">
         <div class="box-inner"></div>
     </div>
