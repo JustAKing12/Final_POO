@@ -28,6 +28,8 @@ body {
     color: #f00822;
     border: 2px solid #f00822;
     transition: 0.3s ease;
+    text-align: center;
+    width: 200px;
     height: 50px;
 }
 
