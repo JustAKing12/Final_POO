@@ -1,14 +1,13 @@
 package ar.edu.unnoba.Proyecto.controller;
 
-import ar.edu.unnoba.Proyecto.exceptionHandler.EventoNotFoundException;
-import ar.edu.unnoba.Proyecto.model.Actividad;
 import ar.edu.unnoba.Proyecto.model.Evento;
 import ar.edu.unnoba.Proyecto.model.Usuario;
-import ar.edu.unnoba.Proyecto.service.ActividadService;
 import ar.edu.unnoba.Proyecto.service.EnviarMailService;
 import ar.edu.unnoba.Proyecto.service.EventoService;
 import ar.edu.unnoba.Proyecto.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,14 +28,12 @@ public class AdministradorController {
 
     private final EnviarMailService enviarMailService;
 
-    private final ActividadService actividadService;
 
     @Autowired
-    public AdministradorController(EventoService eventoService, UsuarioService usuarioService, EnviarMailService enviarMailService, ActividadService actividadService) {
+    public AdministradorController(EventoService eventoService, UsuarioService usuarioService, EnviarMailService enviarMailService) {
         this.eventoService = eventoService;
         this.usuarioService = usuarioService;
         this.enviarMailService = enviarMailService;
-        this.actividadService = actividadService;
     }
 
     //*****************INDEX*****************
@@ -51,17 +48,15 @@ public class AdministradorController {
     //*****************EVENTOS*****************
 
     @GetMapping("/eventos")
-    public String eventos(Model model, Authentication authentication) {
-        User sessionUser = (User) authentication.getPrincipal();
+    public String eventos(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "9") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Evento> eventoPage = eventoService.getPage(pageRequest);
 
-        model.addAttribute("eventosconcreadores", eventoService.getAll());
-        model.addAttribute("user", sessionUser);
+        model.addAttribute("eventos", eventoPage);
+        model.addAttribute("currentPage", page); // info de la pag actual para cambiar de pagina
+        model.addAttribute("totalPages", eventoPage.getTotalPages()); // cant total de paginas
         return "administradores/eventos";
     }//FUNCIONALIDAD: muestra los eventos con los usuarios que los creó
-
-    //La idea es que en la vista eventos, el usuario pueda tener la opción de crear y eliminar eventos.
-    //Osea, se hace el diseño de eventos, apretas algo y redirige a eliminar (no es necesario vista)
-    //o a nuevo (es necesario vista)
 
     @GetMapping("/eventos/eliminar/{id}")
     public String eliminarEvento(@PathVariable Long id) {

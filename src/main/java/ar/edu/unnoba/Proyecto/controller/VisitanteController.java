@@ -2,7 +2,6 @@ package ar.edu.unnoba.Proyecto.controller;
 
 import ar.edu.unnoba.Proyecto.model.Evento;
 import ar.edu.unnoba.Proyecto.model.Subscriptor;
-import ar.edu.unnoba.Proyecto.service.ActividadService;
 import ar.edu.unnoba.Proyecto.service.EventoService;
 import ar.edu.unnoba.Proyecto.service.SubscriptorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +19,11 @@ public class VisitanteController {
 
     private final SubscriptorService subscriptorService;
 
-    private final ActividadService actividadService;
 
     @Autowired
-    private VisitanteController(EventoService eventoService, SubscriptorService subscriptorService, ActividadService actividadService) {
+    private VisitanteController(EventoService eventoService, SubscriptorService subscriptorService) {
         this.eventoService = eventoService;
         this.subscriptorService = subscriptorService;
-        this.actividadService = actividadService;
     }
 
     //*****************INICIO*****************
@@ -99,9 +96,4 @@ public class VisitanteController {
         return "visitantes/historia";
     }
 
-    @GetMapping("/actividades")
-    public String actividades(Model model) {
-        model.addAttribute("actividades", actividadService.getAll());
-        return "visitantes/inicio";
-    }
 }
