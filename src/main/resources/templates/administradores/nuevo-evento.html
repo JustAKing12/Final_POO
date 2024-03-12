@@ -35,7 +35,6 @@
                 <div class="navbar-nav text-center ms-auto">
                     <a class="nav-link" aria-current="page" href="/administrador/inicio">Inicio</a>
                     <a class="nav-link" href="/administrador/eventos">Eventos</a>
-                    <a class="nav-link" href="/administrador/actividades">Actividades</a>
                     <a class="nav-link" href="/administrador/historia">Historia</a>
                     <a class="nav-link" href="/administrador/contacto">Contacto</a>
                     <form th:action="@{/logout}" method="post">
@@ -46,60 +45,44 @@
         </div>
     </nav>
 </header>
-<div class="box">
-    <div class="box-inner"></div>
+    <div class="box">
+        <div class="box-inner"></div>
+    </div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="mt-3 mb-3">Datos del nuevo Evento</h1>
+            <form th:action="@{/administrador/eventos/nuevo}" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="titulo" class="form-label"><h4>Título</h4></label>
+                    <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Título del nuevo evento" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label"><h4>Descripción</h4></label>
+                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Descripción" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <div class="d-flex flex-column">
+                        <label for="imagen" class="form-label"><h4>Imagen</h4></label>
+                        <input type="file" class="form-control-file" id="imagen" name="imagen" required />
+                    </div>
+                </div>
+
+                <div class="mb-3 text-center">
+                    <button class="btn btn-danger" type="submit">Crear evento</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
-<div class="container" >
 
-
-    <!--  <img src="../../static/imagenes/logo.png" alt="Logo" />-->
-    <h1>Crear Evento</h1>
-
-
-    <form th:action="@{/administrador/eventos/nuevo}" method="post" enctype="multipart/form-data">
-        <div class="p-4">
-            <h4>Ingrese un Titulo</h4>
-        <label for="titulo"></label>
-        <input  class="p-2 w-25 "
-                type="text"
-                id="titulo"
-                name="titulo"
-                placeholder="Titulo del nuevo evento"
-                required
-        />
-        </div>
-        <div class="p-4 h-50" style="height: 100px;">
-            <h4>Ingrese una Descripción</h4>
-            <label for="descripcion"></label>
-            <input  class="p-2 w-75 h-100" style="height: 100px;"
-                    type="text"
-                    id="descripcion"
-                    name="descripcion"
-                    placeholder="Descripcion"
-                    required
-            />
-        </div>
-        <div class="p-4">
-
-            <label for="image"><h4>Agregar una foto</h4></label>
-            <input
-                    type="file"
-                    id="image"
-                    name="imagen"
-                    placeholder="imagen"
-                    required
-            />
-        </div>
-        <div class="p-4">
-            <input class="btn btn-danger btn-lg " type="submit" value="Crear nuevo evento"/>
-        </div>
-    </form>
-
-</div>
-<div class="box" style="transform: rotate(180deg)">
-    <div class="box-inner"></div>
-</div>
+    <div class="box" style="transform: rotate(180deg)">
+        <div class="box-inner"></div>
+    </div>
 
 <footer class="container pt-5 pb-5 mt-5">
     <div class="text-center"><img class="img-fluid" src="../../static/imagenes/logo-largo.png" alt="Sociedad Española"></div>

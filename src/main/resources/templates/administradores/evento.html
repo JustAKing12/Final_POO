@@ -35,8 +35,10 @@
                 <div class="navbar-nav text-center ms-auto">
                     <a class="nav-link" aria-current="page" href="/administrador/inicio">Inicio</a>
                     <a class="nav-link" href="/administrador/eventos">Eventos</a>
-                    <form action="#" th:action="@{/logout}" method="POST">
-                        <button type="submit" class="nav-link">Logout</button>
+                    <a class="nav-link" href="/administrador/historia">Historia</a>
+                    <a class="nav-link" href="/administrador/contacto">Contacto</a>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-link nav-link">Cerrar sesión</button>
                     </form>
                 </div>
             </div>
@@ -55,47 +57,30 @@
             <h1>Modificar Evento</h1>
             <form th:action="@{'/administrador/evento/' + ${evento.id}}" method="post" class="mt-2" enctype="multipart/form-data">
 
-                <div class="form-group p-3">
-                    <label for="titulo">Titulo:</label>
-                    <input
-                            type="text"
-                            class="form-control"
-                            id="titulo"
-                            name="titulo"
-                            th:value="${evento.titulo}"
-                            placeholder="Titulo del nuevo evento"
-                            required
-                    />
+                <div class="form-group">
+                    <label for="titulo" class="form-label label-h">Titulo:</label>
+                    <input type="text" class="form-control" id="titulo" name="titulo" th:value="${evento.titulo}" placeholder="Titulo del nuevo evento" required />
                 </div>
 
-                <div class="form-group p-3">
-                    <label for="descripcion">Descripcion:</label>
-                    <textarea
-                            class="form-control"
-                            id="descripcion"
-                            name="descripcion"
-                            rows="3"
-                            th:field="${evento.descripcion}"
-                            required
-                    ></textarea>
+                <div class="form-group">
+                    <label for="descripcion" class="form-label label-h">Descripcion:</label>
+                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3" th:field="${evento.descripcion}" required></textarea>
                 </div>
-                <div class="form-group p-3">
-                    <label for="image">Imagen:</label>
+
+                <div class="form-group">
+                    <label for="image" class="form-label label-h">Imagen:</label>
+                    <input type="hidden" th:if="${evento.imagen}" th:value="${evento.imagen}" name="imagen" />
                     <div>
                         <!-- Imagen -->
-                        <img th:src="@{'/display?id=' + ${evento.id}}" class="img-fluid" alt="Imagen del evento" />
+                        <img th:src="@{'/display?id=' + ${evento.id}}" class="img-fluid mb-3" alt="Imagen del evento" style="max-width: 35%; height: auto;"/>
                     </div>
-                    <input
-                            type="file"
-                            id="image"
-                            name="imagen"
-                            class="form-control-file mt-2"
-                            th:field="${evento.imagen}"
-                    />
+                    <input type="file" id="image" name="imagen" class="form-control-file" th:field="${evento.imagen}" />
                 </div>
-                <!-- Botón para volver a la lista de eventos -->
-                <button type="submit" class="btn btn-lg rounded-0 btn-pseudoclase mt-2 mb-2" value="Modificar">Guardar</button>
-                <button th:href="@{/administrador/eventos}" class="btn btn-lg rounded-0 btn-pseudoclase m-2">Volver a la lista de eventos</button>
+                <!-- Botón para guardar cambios y volver a la lista de eventos -->
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-danger mt-2 mb-2" value="Modificar">Guardar</button>
+                    <button th:href="@{/administrador/eventos}" class="btn btn-danger m-2">Volver a la lista de eventos</button>
+                </div>
             </form>
         </div>
     </div>

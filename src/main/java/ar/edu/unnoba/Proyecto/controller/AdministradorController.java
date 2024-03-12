@@ -14,9 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.sql.SQLException;
 
 @Controller
 @RequestMapping("/administrador")
@@ -96,10 +99,6 @@ public class AdministradorController {
     @GetMapping("/evento/{id}")
     public String modificarEvento(Model model, Authentication authentication, @PathVariable Long id) {
 
-        /* if ((id >= eventoService.getAll().size()) || (id < 0)) {
-            throw new EventoNotFoundException("Evento no encontrado con id: " + id);
-        } */
-
         User sessionUser = (User) authentication.getPrincipal();
 
         Evento evento = eventoService.get(id);
@@ -110,24 +109,38 @@ public class AdministradorController {
     }//FUNCIONALIDAD: muestra un evento específico con sus detalles y permite modificarlo
 
     @PostMapping("/evento/{id}")
-    public String modificarEvento(Model model, Authentication authentication, @Valid Evento evento, BindingResult result) {
+    //FUNCIONALIDAD: procesa el formulario de modificación de un evento y guarda los cambios
+    public String modificarEvento(Model model, Authentication authentication, @Valid Evento evento, BindingResult result, @RequestParam("imagen") MultipartFile imagen) {
         User sessionUser = (User) authentication.getPrincipal();
 
-        if (result.hasErrors()) {
-            model.addAttribute("evento", evento);
-            model.addAttribute("user", sessionUser);
-            return "administradores/evento";
-            //Mantiene los datos que ingresó el usuario, aunque fuera error, para luego corregirlos al ingresar de nuevo.
+        // guarda el evento existente
+        Evento eventoExistente = eventoService.get(evento.getId());
+
+        // Verifica si se cargo una nueva imagen
+        if (!imagen.isEmpty()) {
+            try {
+                // Actualizar la imagen del evento
+                eventoExistente.setImagen(imagen);
+            } catch (IOException | SQLException e) {
+                e.printStackTrace();
+            }
         }
 
-        evento.setUsuario(usuarioService.findByUserName(sessionUser.getUsername()));
+        if (result.hasErrors()) {
+            model.addAttribute("evento", eventoExistente);
+            model.addAttribute("user", sessionUser);
+            return "administradores/evento";
+        }
 
-        eventoService.save(evento);
+        eventoExistente.setUsuario(usuarioService.findByUserName(sessionUser.getUsername()));
+        eventoExistente.setTitulo(evento.getTitulo());
+        eventoExistente.setDescripcion(evento.getDescripcion());
+
+        eventoService.save(eventoExistente);
         //enviarMailService.enviar(evento);
         model.addAttribute("success", "El evento ha sido modificado correctamente.");
         return "redirect:/administrador/eventos";
-    }//FUNCIONALIDAD: procesa el formulario de modificación de un evento y guarda los cambios
-
+    }
 
     //*****************Historia*****************
 
