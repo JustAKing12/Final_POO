@@ -1,7 +1,10 @@
 package ar.edu.unnoba.Proyecto.controller;
 
+import ar.edu.unnoba.Proyecto.exceptionHandler.EventoNotFoundException;
+//import ar.edu.unnoba.Proyecto.model.Actividad;
 import ar.edu.unnoba.Proyecto.model.Evento;
 import ar.edu.unnoba.Proyecto.model.Usuario;
+//import ar.edu.unnoba.Proyecto.service.ActividadService;
 import ar.edu.unnoba.Proyecto.service.EnviarMailService;
 import ar.edu.unnoba.Proyecto.service.EventoService;
 import ar.edu.unnoba.Proyecto.service.UsuarioService;
@@ -61,6 +64,10 @@ public class AdministradorController {
         return "administradores/eventos";
     }//FUNCIONALIDAD: muestra los eventos con los usuarios que los creó
 
+    //La idea es que en la vista eventos, el usuario pueda tener la opción de crear y eliminar eventos.
+    //Osea, se hace el diseño de eventos, apretas algo y redirige a eliminar (no es necesario vista)
+    //o a nuevo (es necesario vista)
+
     @GetMapping("/eventos/eliminar/{id}")
     public String eliminarEvento(@PathVariable Long id) {
         eventoService.delete(id);
@@ -71,7 +78,7 @@ public class AdministradorController {
     public String nuevoEvento(Model model, Authentication authentication) {
         User sessionUser = (User) authentication.getPrincipal();
 
-        Evento evento = new Evento();
+        Evento evento = new Evento(); //Entre estos metodos el ID del nuevo evento se saltea uno
         model.addAttribute("evento", evento); //el usuario debe introducir: titulo, descripcion, imagen
         model.addAttribute("user", sessionUser);
         return "administradores/nuevo-evento";
@@ -127,9 +134,10 @@ public class AdministradorController {
         }
 
         if (result.hasErrors()) {
-            model.addAttribute("evento", eventoExistente);
+            model.addAttribute("evento", evento);
             model.addAttribute("user", sessionUser);
-            return "administradores/evento";
+            return "administradores/evento";//Entra aca como si hubiera un error
+            //Mantiene los datos que ingresó el usuario, aunque fuera error, para luego corregirlos al ingresar de nuevo.
         }
 
         eventoExistente.setUsuario(usuarioService.findByUserName(sessionUser.getUsername()));
@@ -140,7 +148,8 @@ public class AdministradorController {
         //enviarMailService.enviar(evento);
         model.addAttribute("success", "El evento ha sido modificado correctamente.");
         return "redirect:/administrador/eventos";
-    }
+    }//FUNCIONALIDAD: procesa el formulario de modificación de un evento y guarda los cambios
+
 
     //*****************Historia*****************
 
