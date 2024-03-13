@@ -226,4 +226,47 @@ public class AdministradorController {
         }
         return "redirect:/administrador/inicio";
     }
+
+
+    @GetMapping("/usuario/{id}")
+    public String modificarUsuario(Model model, Authentication authentication, @PathVariable Long id) {
+
+        User sessionUser = (User) authentication.getPrincipal();
+
+        Usuario usuario = usuarioService.get(id);
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("user", sessionUser);
+        model.addAttribute("mensaje", "los usuarios se modificaran");
+        return "administradores/modificar-usuario";
+    }//FUNCIONALIDAD: muestra un usuario específico con sus detalles y permite modificarlo
+
+    @PostMapping("/usuario/{id}")
+    //FUNCIONALIDAD: procesa el formulario de modificación de un evento y guarda los cambios
+    public String modificarUsuario(Model model, Authentication authentication, @Valid Usuario usuario, BindingResult result) {
+        User sessionUser = (User) authentication.getPrincipal();
+
+
+        if (result.hasErrors()) {
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("user", sessionUser);
+            model.addAttribute("borrar", 1);
+            return "administradores/nuevo-usuario";
+            //Mantiene los datos que ingresó el usuario, aunque fuera error, para luego corregirlos al ingresar de nuevo.
+        }
+
+//        eventoExistente.setUsuario(usuarioService.findByUserName(sessionUser.getUsername()));
+//        eventoExistente.setTitulo(evento.getTitulo());
+//        eventoExistente.setDescripcion(evento.getDescripcion());
+//        eventoService.save(eventoExistente);
+        //enviarMailService.enviar(evento);
+
+        usuarioService.save(usuario);
+//        model.addAttribute("success", "El usuario ha sido modificado correctamente.");
+        model.addAttribute("usuarios", usuarioService.getAll());
+        model.addAttribute("borrar", 1);
+        return "administradores/nuevo-usuario";
+    }//FUNCIONALIDAD: procesa el formulario de modificación de un uusario y guarda los cambios
+
+
+
 }

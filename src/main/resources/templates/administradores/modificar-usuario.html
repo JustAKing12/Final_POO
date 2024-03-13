@@ -14,10 +14,10 @@
   <meta name="geo.region" content="AR">
   <meta name="geo.placename" content="Junín">
   <meta name="geo.position" content="-34.5930526;-60.9462904">
-  <link rel="shortcut icon" href="../../static/imagenes/logo.png" type="image/x-icon">
+  <link rel="shortcut icon" href="../../static/imagenes/eventosImg/logo.svg" type="image/x-icon">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sociedad Española Junín | Crear Usuario</title>
+  <title>Sociedad Española Junín | Evento</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -50,71 +50,33 @@
   <div class="box-inner"></div>
 </div>
 
-<div class="container">
-  <div th:if="${crear == 1}">
-  <h1  class="p-3 text-center" >Datos del nuevo Administrador</h1>
-
-  <div th:if="${param.error}" class="custom-alert text-center">
-    <strong>Nombre de usuario ya existente</strong><br>
-  </div>
-
+<div class="container mt-4">
+  <!-- Muestra los detalles del evento a modificar -->
+  <div th:if="${mensaje}" class="custom-alert">
     <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <form th:action="@{/administrador/usuario/crear}" method="post">
-            <div class="mb-3">
-              <label for="username" class="form-label label-h"><h4>Usuario</h4></label>
-              <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese un nombre de usuario." required/>
-            </div>
+      <h1>Modificar Usuario</h1>
+      <form th:action="@{'/administrador/usuario/' + ${usuario.id}}" method="post" class="mt-2" enctype="multipart/form-data">
 
-            <div class="mb-3">
-              <label for="password" class="form-label label-h"><h4>Contraseña</h4></label>
-              <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese una contraseña." required/>
-            </div>
-
-            <div class="mb-3">
-              <button type="submit" class="btn btn-danger mt-2 mb-2">Crear usuario</button>
-            </div>
-
-          </form>
+        <div class="form-group">
+          <label for="username" class="form-label label-h">Nombre:</label>
+          <input type="text" class="form-control" id="username" name="username" th:value="${usuario.getUsername()}" placeholder="Nombre modificado" required />
         </div>
-      </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label label-h"><h4>Contraseña</h4></label>
+          <input type="password" class="form-control" id="password" name="password" th:value="${usuario.getUsername()}" placeholder="Ingrese la contraseña modificada." required/>
+        </div>
+
+        <!-- Botón para guardar cambios y volver a la lista de usuarios -->
+        <div class="d-flex">
+          <button type="submit" class="btn btn-danger mt-2 mb-2" value="Modificar">Guardar</button>
+<!--          <button th:href="@{/administrador/usuario/eliminar}" class="btn btn-danger m-2">Volver a la lista de usuarios</button>-->
+          <a class="btn btn-danger mt-2" href="/administrador/usuario/eliminar">Volver a la lista de usuarios</a>
+        </div>
+      </form>
     </div>
   </div>
 
-  <div th:if="${borrar == 1}">
-    <h1 class="p-5 text-center" >Lista de usuarios administradores</h1>
-
-    <div class="container">
-      <div class="row">
-        <!-- "th:each": Itera sobre cada usuario en la lista de usuarios -->
-        <div th:each="usuario : ${usuarios}" class="col-md-2 mb-3">
-          <div class="card event_card bg-customAdmin text-center card-small">
-            <div class="card-body">
-              <h5 th:text="${usuario.getUsername()}" class="card-title"></h5>
-            </div>
-          </div>
-          <a th:href="@{'/administrador/usuario/' + ${usuario.getId()}}" class="btn rounded-0 btn-pseudoclase">Modificar</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <form th:action="@{/administrador/usuarios/eliminar}" method="post">
-            <div class="mb-3">
-              <label for="nombreUsuario" class="form-label label-h">Nombre del Usuario a borrar:</label>
-              <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" placeholder="Nombre del Usuario" required/>
-            </div>
-            <div class="mb-3">
-              <button type="submit" class="btn btn-danger">Borrar usuario</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
 
 </div>
 <div class="box" style="transform: rotate(180deg)">
@@ -124,26 +86,10 @@
 <footer class="container pt-5 pb-5 mt-5">
   <div class="text-center"><img class="img-fluid" src="../../static/imagenes/logo-largo.png" alt="Sociedad Española"></div>
   <div class="d-grid grid-footer gap-5 pt-5">
-    <div class="text-center mx-auto">
-      <div class="d-flex align-items-center">
-        <img src="../../static/imagenes/ubicacion.svg" alt width="40.2" height="40.2">
-        <span class="fs-1 ps-3">¿Dónde estamos?</span>
-      </div>
-      <div><a href="https://maps.app.goo.gl/xjwUxZG8DANdN8AR7" class="text-decoration-none text-black fs-4 subrayado">Narbondo 32, Junín, Buenos Aires</a></div>
-    </div>
-    <div class="text-center">
-      <div class="d-flex align-items-center justify-content-center">
-        <img src="../../static/imagenes/llamar.svg" alt width="40.2" height="40.2">
-        <span class="fs-1 ps-3">Nuestro contacto</span>
-      </div>
-      <div><a href="tel:542364533342" class="text-decoration-none text-black fs-4 subrayado" role="button">+54 9 236 453-3342</a></div>
-    </div>
   </div>
 </footer>
-<!-- Scripts de Bootstrap y cualquier otro script necesario -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="../../static/script.js"></script>
 </body>
 </html>
-
