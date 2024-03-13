@@ -64,10 +64,6 @@ public class AdministradorController {
         return "administradores/eventos";
     }//FUNCIONALIDAD: muestra los eventos con los usuarios que los creó
 
-    //La idea es que en la vista eventos, el usuario pueda tener la opción de crear y eliminar eventos.
-    //Osea, se hace el diseño de eventos, apretas algo y redirige a eliminar (no es necesario vista)
-    //o a nuevo (es necesario vista)
-
     @GetMapping("/eventos/eliminar/{id}")
     public String eliminarEvento(@PathVariable Long id) {
         eventoService.delete(id);
@@ -78,7 +74,7 @@ public class AdministradorController {
     public String nuevoEvento(Model model, Authentication authentication) {
         User sessionUser = (User) authentication.getPrincipal();
 
-        Evento evento = new Evento(); //Entre estos metodos el ID del nuevo evento se saltea uno
+        Evento evento = new Evento();
         model.addAttribute("evento", evento); //el usuario debe introducir: titulo, descripcion, imagen
         model.addAttribute("user", sessionUser);
         return "administradores/nuevo-evento";
@@ -145,24 +141,17 @@ public class AdministradorController {
         eventoExistente.setDescripcion(evento.getDescripcion());
 
         eventoService.save(eventoExistente);
-        //enviarMailService.enviar(evento);
         model.addAttribute("success", "El evento ha sido modificado correctamente.");
         return "redirect:/administrador/eventos";
     }//FUNCIONALIDAD: procesa el formulario de modificación de un evento y guarda los cambios
 
 
-    //*****************Historia*****************
+    //*****************HISTORIA*****************
 
     @GetMapping("/historia")
     public String historia(){
         return "administradores/historia";
     }
-//    @GetMapping("/quienes-somos")
-//    public String quienesSomos(Model model, Authentication authentication) {
-//        User sessionUser = (User) authentication.getPrincipal();
-//        model.addAttribute("user", sessionUser);
-//        return "historia";
-//    }
 
     //*****************CONTACTO*****************
 

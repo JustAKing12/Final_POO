@@ -48,7 +48,6 @@ public class VisitanteController {
     @GetMapping("/eventos")
     public String eventos(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
         // valores predeterminados de prueba: pagina 0 de tamaño 3
-        // se puede cambiar yendo a visitante/eventos?page=0&size=10
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Evento> eventoPage = eventoService.getPage(pageRequest);
 
@@ -57,7 +56,7 @@ public class VisitanteController {
         model.addAttribute("currentPage", page); // info de la pag actual para cambiar de pagina
         model.addAttribute("totalPages", eventoPage.getTotalPages()); // cant total de paginas
         return "visitantes/eventos";
-    }//FUNCIONALIDAD: Listado de todas los eventos
+    }//FUNCIONALIDAD: Listado de todos los eventos
 
     @PostMapping("/eventos")
     public String eventos(@ModelAttribute("sub") Subscriptor subscriptor) {
@@ -71,11 +70,7 @@ public class VisitanteController {
     public String evento(@PathVariable Long id, Model model) {
 
         Evento evento = eventoService.get(id);
-        /* ver esto despues */
-        /* String username = evento.getUsuario().getUsername(); */
         model.addAttribute("evento", evento);
-        /* model.addAttribute("username", username); */
-
         return "visitantes/evento";
     }//FUNCIONALIDAD: Mostrar en detalle un Evento
 

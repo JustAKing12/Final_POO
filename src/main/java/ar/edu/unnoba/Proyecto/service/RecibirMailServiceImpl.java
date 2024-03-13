@@ -17,7 +17,7 @@ public class RecibirMailServiceImpl implements RecibirMailService {
         this.javaMailSender = javaMailSender;
     }
 
-    @Value("${spring.mail.username}")
+    @Value("${lucaslcoria122@gmail.com}")
     private String username;
 
     @Override

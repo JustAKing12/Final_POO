@@ -12,8 +12,8 @@ import java.util.Date;
 @Entity
 @Table(name = "evento")
 public class Evento {
-//Cada vez que se crea un evento el usuario carga titulo, descripcion, usuario
-//Por ahora no es prioridad que se inserte una imagen, pero luego debe implementarse
+//Cada vez que se crea un evento el usuario carga titulo, descripcion, usuario y imagen
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

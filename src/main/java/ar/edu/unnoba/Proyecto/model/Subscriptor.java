@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "subscriptor")
 public class Subscriptor {
-//Cada vez que se crea un subcriptor el usuario carga email, nombre.
+//Cada vez que un usuario se suscriba este cargara email y nombre.
     @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

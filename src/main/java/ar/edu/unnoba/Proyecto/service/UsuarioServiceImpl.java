@@ -25,7 +25,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario findByUserName(String username) {
-        // check the database if the user already exists
+        // se fija en la base de datos si el usuario ya existe
         return usuarioRepository.findByUsername(username);
     }
 

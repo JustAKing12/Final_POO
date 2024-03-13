@@ -37,11 +37,4 @@ public class SubscriptorServiceImpl implements SubscriptorService {
         subscriptorRepository.deleteById(id);
     }
 
-/*   public boolean existsByEmail(String email) {
-//        return this.subscriptorRepository.existsByEmail(email);
-//    }
-//
-//    public Subscriptor getByEmail(String email) {
-//        return this.subscriptorRepository.getByEmail(email);
-//    }*/
 }

@@ -27,7 +27,7 @@ public class EnviarMailServiceImpl implements EnviarMailService {
         this.subscriptorService = subscriptorService;
     }
 
-    @Value("${spring.mail.username}")
+    @Value("${lucaslcoria122@gmail.com}")
     private String remitente;
 
     public void enviar(Evento evento) {
@@ -56,8 +56,6 @@ public class EnviarMailServiceImpl implements EnviarMailService {
             mailSender.send(mimeMessage);
         } catch (MessagingException | MailException e) {
             // Manejar la excepción de envío de correo (por ejemplo, registrar o notificar al administrador)
-            // También puedes considerar reintentar el envío o notificar al usuario sobre el error.
-            // Ejemplo: logger.error("Error al enviar el correo: " + e.getMessage());
         }
     }
 
